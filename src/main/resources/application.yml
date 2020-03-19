@@ -1,0 +1,52 @@
+spring:
+  #关闭thymeleaf缓存
+  thymeleaf:
+    cache: false
+  #开启国际化资源
+  messages:
+    basename: i18n.login
+  #配置DataSource
+  datasource:
+    username: root
+    password: admin
+    #使用mysql连接驱动是8.0以上,需要在Url后面加上时区,GMT%2B8代表中国时区,不然会报时区错误
+    url: jdbc:mysql://127.0.0.1:3306/bill?serverTimezone=GMT%2B8&characterEncoding=UTF-8
+    #注意:新版本驱动包,要使用以下类作为驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #引入druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 数据源其他配置, DataSourceProperties中没有相关属性,默认无法绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,logback
+    maxPoolPreparedStatementPerConnectionSize: 25
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  mvc:
+    #设置mvc日期格式
+    date-format: yyyy-MM-dd
+  #配置redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+#配置Mybatis配置文件
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+#控制台打印sql
+logging:
+  level:
+    ek.zhou.springboot.mapper: debug
+
+

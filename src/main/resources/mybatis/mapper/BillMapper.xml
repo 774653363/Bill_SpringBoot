@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ek.zhou.springboot.mapper.BillMapper">
+    <select id="getBills" resultType="ek.zhou.springboot.entities.BillProvider" >
+        select b.*,p.providerName from bill b left join provider p on b.pid = p.pid
+        <where>
+            <if test="billName!=null and billName!=''">
+                and bill_name like '%${billName}%'
+            </if>
+            <if test="pid!=null">
+                and b.pid = #{pid}
+            </if>
+            <if test="pay!=null">
+                and pay = #{pay}
+            </if>
+        </where>
+    </select>
+    <select id="getBillByBid" resultType="ek.zhou.springboot.entities.BillProvider" >
+        select b.*,p.providerName from bill b left join provider p on b.pid = p.pid where bid = #{bid}
+    </select>
+    <insert id="addBill" >
+        insert into bill values
+        (null,#{billCode},#{billName},
+         #{billCom},#{billNum},#{money},#{pay},#{pid},now())
+    </insert>
+    <update id="updateBill">
+        update bill set
+        bill_code=#{billCode},bill_name=#{billName},
+        bill_com=#{billCom},bill_num=#{billNum},money=#{money},
+        pay=#{pay},`pid`=#{pid},create_date=now()
+        where bid=#{bid}
+    </update>
+    <delete id="deleteBillByBid">
+        delete from bill where bid=#{bid}
+    </delete>
+</mapper>
